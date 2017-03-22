@@ -13,7 +13,7 @@ Run the server
 >$ cd spring-classic-jersey-jpa-demo && mvn jetty:run 
 
 Or alternatively
->$ cd spring-boot-jersey-jpa-demo && mvn spring-boot:run # run the server
+>$ cd spring-boot-jersey-jpa-demo && mvn spring-boot:run
 
 Run the client
 >$ curl --data France http://localhost:8080/demo/create/country
