@@ -6,6 +6,11 @@
 
 ---
 
+Requirements:
+>JDK 8, Maven 3
+
+>Tests themselves ran succssfully in local or hosted Linux box
+
 Install the artifacts to local repos
 >$ mvn clean install
 

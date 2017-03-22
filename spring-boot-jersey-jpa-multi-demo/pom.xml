@@ -8,10 +8,6 @@
 	</parent>
 	<artifactId>spring-boot-jersey-jpa-multi-demo</artifactId>
 
-	<properties>
-		<spring.boot.version>1.5.2.RELEASE</spring.boot.version>
-	</properties>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -38,15 +34,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
@@ -73,7 +62,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>${spring.boot.version}</version>
 			</plugin>
 
 		</plugins>
