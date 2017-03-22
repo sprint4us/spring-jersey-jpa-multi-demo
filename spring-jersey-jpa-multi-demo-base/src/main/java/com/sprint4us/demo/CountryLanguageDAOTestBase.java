@@ -117,16 +117,16 @@ public class CountryLanguageDAOTestBase {
 
 	public void testUpdateOK() {
 
-		int actualNumberOfUpdated = service.updatePercentage("English", 99);
+		int actualNumberOfUpdated = service.updatePercentage("German", 99);
 		assertEquals("The number of updated is not equal", 4,
 				actualNumberOfUpdated);
 
 		Country country = service.searchCountry("Italy");
 
 		Language language = country.getLanguages().stream()
-				.filter(l -> l.getName() == "English").findFirst().get();
+				.filter(l -> l.getName() == "German").findFirst().get();
 		int actualPercentage = language.getPercentage();
-		assertEquals("The percentage is not equal", 34, actualPercentage);
+		assertEquals("The percentage is not equal", 5, actualPercentage);
 
 		service.syncToDB(country);
 		actualPercentage = language.getPercentage();
