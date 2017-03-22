@@ -19,7 +19,7 @@ import com.sprint4us.demo.entity.Language;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = {
 		"/applicationContext.xml" })
-public class CoutryLanguageEndToEndTest extends CountryLanguageJerseyTestBase {
+public class CountryLanguageEndToEndClassicTest extends CountryLanguageJerseyTestBase {
 
 	@Test
 	public void testEndToEnd() {

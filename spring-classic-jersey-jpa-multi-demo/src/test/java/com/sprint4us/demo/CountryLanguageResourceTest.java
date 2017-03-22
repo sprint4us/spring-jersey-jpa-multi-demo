@@ -27,7 +27,7 @@ import com.sprint4us.demo.entity.Language;
 
 @RunWith(MockitoJUnitRunner.class)
 @WebAppConfiguration
-public class CoutryLanguageResourceTest extends CountryLanguageJerseyTestBase {
+public class CountryLanguageResourceTest extends CountryLanguageJerseyTestBase {
 
 	@Mock
 	private CountryLanguageDAO service;

@@ -2,35 +2,28 @@ package com.sprint4us.demo;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.sprint4us.demo.dao.CountryLanguageDAO;
 import com.sprint4us.demo.entity.Country;
 import com.sprint4us.demo.entity.Language;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class CountryLanguageDAOTest {
+public class CountryLanguageDAOTestBase {
 
 	@Autowired
 	private CountryLanguageDAO service;
 
 	/*
-	 * According to https://en.wikipedia.org/wiki/Languages_of_{Country},
-	 * main foreign languages in some European countries exhibit below,
+	 * According to https://en.wikipedia.org/wiki/Languages_of_{Country}, main
+	 * foreign languages in some European countries exhibit below,
 	 * 
-	 * France : English 39% Spanish 13% German 8% Italian 5%
-	 * Germany: English 56% French 15% Russian 5%
-	 * Italy : English 34% French 16% Spanish 11% German 5%
-	 * Spain : English 27% French 12% German 2%
-	 * the_United_Kingdom: French 23% German 9% Spanish 8%
+	 * France: English 39%, Spanish 13%, German 8%, Italian 5%
+	 * Germany: English 56%, French 15%, Russian 5%
+	 * Italy: English 34%, French 16%, Spanish 11%, German 5%
+	 * Spain: English 27%, French 12%, German 2%
+	 * the_United_Kingdom: French 23%, German 9%, Spanish 8%
 	 */
 
-	@Test
 	public void testCreateOK() {
 
 		String[] countryNames = {
@@ -92,6 +85,13 @@ public class CountryLanguageDAOTest {
 		}
 
 		int actualTotalCountries = service.retrieveAllCountries().size();
+
+		// check if E2E test beat the gun.
+		if (service.findCountry(1L).getName().equals("Netherlands")) {
+			++expectedTotalCountries;
+			++expectedTotalLanguages;
+		}
+
 		assertEquals("The total countries are not equal",
 				expectedTotalCountries, actualTotalCountries);
 
@@ -100,7 +100,6 @@ public class CountryLanguageDAOTest {
 				expectedTotalLanguages, actualTotalLanguages);
 	}
 
-	@Test
 	public void testSearchOK() {
 
 		Country country = service.searchCountry("Spain");
@@ -108,15 +107,14 @@ public class CountryLanguageDAOTest {
 		assertEquals("The country name is not equal", "Spain",
 				acutalCountryName);
 
-		int acutalNumberOfCountries = service.searchCountries("English").size();
-		assertEquals("The number of countries is not equal", 4,
+		int acutalNumberOfCountries = service.searchCountries("Spanish").size();
+		assertEquals("The number of countries is not equal", 3,
 				acutalNumberOfCountries);
 
 		int actualPercentage = service.searchPercentage("Germany", "French");
 		assertEquals("The percentage is not equal", 15, actualPercentage);
 	}
 
-	@Test
 	public void testUpdateOK() {
 
 		int actualNumberOfUpdated = service.updatePercentage("English", 99);

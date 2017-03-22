@@ -24,7 +24,7 @@ import com.sprint4us.demo.entity.Language;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CoutryLanguageEndToEndTest {
+public class CountryLanguageEndToEndTest {
 
 	@Autowired
 	private TestRestTemplate rest;
