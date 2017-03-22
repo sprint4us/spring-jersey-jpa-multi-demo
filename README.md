@@ -26,3 +26,5 @@ Run the client
 
 >$ curl "http://localhost:8080/demo/search/percentage?c=France&l=English"
 >France has 39% English as foreign language.
+
+Now, time to kick off Travis CI ☺
