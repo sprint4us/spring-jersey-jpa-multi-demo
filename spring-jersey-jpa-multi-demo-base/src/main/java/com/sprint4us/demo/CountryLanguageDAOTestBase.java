@@ -2,7 +2,11 @@ package com.sprint4us.demo;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaSystemException;
 
 import com.sprint4us.demo.dao.CountryLanguageDAO;
 import com.sprint4us.demo.entity.Country;
@@ -98,6 +102,18 @@ public class CountryLanguageDAOTestBase {
 		int actualTotalLanguages = service.retrieveAllLanguages().size();
 		assertEquals("The total languages are not equal",
 				expectedTotalLanguages, actualTotalLanguages);
+	}
+
+	@Test(expected = JpaSystemException.class)
+	public void testCreateOnException() {
+
+		try {
+			service.create(new Country("France"));
+		} catch (JpaSystemException e) {
+			if (e.contains(SQLIntegrityConstraintViolationException.class)) {
+				throw e;
+			}
+		}
 	}
 
 	public void testSearchOK() {
