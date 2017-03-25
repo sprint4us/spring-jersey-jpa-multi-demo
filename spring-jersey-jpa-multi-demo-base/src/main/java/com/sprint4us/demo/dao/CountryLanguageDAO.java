@@ -37,9 +37,10 @@ public class CountryLanguageDAO {
 	public int updatePercentage(String languageName, int percentage) {
 
 		int retVal = em
-				.createQuery("update Language l set l.percentage=" + percentage
-						+ " where l.name='" + languageName + "'")
-				.executeUpdate();
+				.createQuery(
+						"update Language l set l.percentage=:percent where l.name=:langName")
+				.setParameter("percent", percentage)
+				.setParameter("langName", languageName).executeUpdate();
 
 		return retVal;
 	}
@@ -88,10 +89,9 @@ public class CountryLanguageDAO {
 		Country retVal = null;
 		try {
 			retVal = em
-					.createQuery(String.format(
-							"select c from Country c where c.name='%s'",
-							countryName), Country.class)
-					.getSingleResult();
+					.createQuery("select c from Country c where c.name=:name",
+							Country.class)
+					.setParameter("name", countryName).getSingleResult();
 		} catch (NoResultException e) {
 			retVal = new Country();
 		}
@@ -104,10 +104,10 @@ public class CountryLanguageDAO {
 		List<Country> retVal = null;
 		try {
 			retVal = em
-					.createQuery(String.format(
-							"select c from Country c, Language l where l.name='%s' and l member of c.languages",
-							languageName), Country.class)
-					.getResultList();
+					.createQuery(
+							"select c from Country c, Language l where l.name=:langName and l member of c.languages",
+							Country.class)
+					.setParameter("langName", languageName).getResultList();
 		} catch (NoResultException e) {
 			retVal = new ArrayList<Country>();
 		}
@@ -120,10 +120,11 @@ public class CountryLanguageDAO {
 		int retVal = 0;
 		try {
 			retVal = em
-					.createQuery(String.format(
-							"select l.percentage from Country c, Language l where c.name='%s' and l.name='%s' and l member of c.languages",
-							countryName, languageName), Integer.class)
-					.getSingleResult();
+					.createQuery(
+							"select l.percentage from Country c, Language l where c.name=:countryName and l.name=:langName and l member of c.languages",
+							Integer.class)
+					.setParameter("countryName", countryName)
+					.setParameter("langName", languageName).getSingleResult();
 		} catch (NoResultException e) {
 		}
 

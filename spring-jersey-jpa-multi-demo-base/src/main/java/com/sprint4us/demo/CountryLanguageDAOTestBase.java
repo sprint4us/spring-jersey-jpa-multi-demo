@@ -117,7 +117,13 @@ public class CountryLanguageDAOTestBase {
 
 	public void testUpdateOK() {
 
-		int actualNumberOfUpdated = service.updatePercentage("German", 99);
+		// test anti sql injection
+		int actualNumberOfUpdated = service
+				.updatePercentage("German 'AND '1'='1", 99);
+		assertEquals("Oops, sql injection penetrated", 0,
+				actualNumberOfUpdated);
+
+		actualNumberOfUpdated = service.updatePercentage("German", 99);
 		assertEquals("The number of updated is not equal", 4,
 				actualNumberOfUpdated);
 

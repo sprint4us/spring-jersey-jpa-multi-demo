@@ -7,6 +7,7 @@ import java.util.Collections;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -26,12 +27,18 @@ import com.sprint4us.demo.entity.Language;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CountryLanguageEndToEndTest {
 
+	private final static String USER = "user";
 	@Autowired
 	private TestRestTemplate rest;
+
+	@Value("${security.user.password}")
+	private String password;
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testEndToEnd() {
+
+		rest = rest.withBasicAuth(USER, password);
 
 		Country country = rest.postForObject("/demo/create/country",
 				"Netherlands", Country.class, Collections.EMPTY_MAP);

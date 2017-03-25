@@ -17,20 +17,39 @@ Install the artifacts to local repos
 Run the server
 >$ cd spring-classic-jersey-jpa-demo && mvn jetty:run 
 
-Or alternatively
->$ cd spring-boot-jersey-jpa-demo && mvn spring-boot:run
-
 Run the client
->$ curl --data France http://localhost:8080/demo/create/country
+>$ curl --data France localhost:8080/demo/create/country
 
 >{"id":1,"name":"France","languages":[]}
 
->$ curl --data "id=1&l=English&p=39" http://localhost:8080/demo/update/country
+>$ curl --data "id=1&l=English&p=39" localhost:8080/demo/update/country
 
 >{"id":1,"name":"France","languages":[{"id":1,"name":"English","percentage":39}]}
 
->$ curl "http://localhost:8080/demo/search/percentage?c=France&l=English"
+>$ curl "localhost:8080/demo/search/percentage?c=France&l=English"
+
+>France has 39% English as foreign language.
+
+Alternatively, run the secure server
+>$ cd spring-boot-jersey-jpa-demo && mvn spring-boot:run
+
+Run the secure client
+>$ curl -k -u user:password --data France https://localhost:8443/demo/create/country
+
+>{"id":1,"name":"France","languages":[]}
+
+>$ curl -k -u user:password --data "id=1&l=English&p=39" https://localhost:8443/demo/update/country
+
+>{"id":1,"name":"France","languages":[{"id":1,"name":"English","percentage":39}]}
+
+>$ curl -k -u user:password "https://localhost:8443/demo/search/percentage?c=France&l=English"
 
 >France has 39% English as foreign language.
 
 Now, time to kick off Travis CI ☺
+
+---
+
+TODO:
+>
+>Add auth & https to make the webapp securer 
