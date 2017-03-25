@@ -10,12 +10,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class CountryLanguageDAOBootTest extends CountryLanguageDAOTestBase{
+public class CountryLanguageDAOBootTest extends CountryLanguageDAOTestBase {
 
 	@Test
 	public void testCreateOK() {
 
 		super.testCreateOK();
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void testCreateOnException() {
+
+		super.testCreateOnException();
 	}
 
 	@Test

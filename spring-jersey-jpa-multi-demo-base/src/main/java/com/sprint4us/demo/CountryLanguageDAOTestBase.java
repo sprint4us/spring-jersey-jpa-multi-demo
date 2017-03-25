@@ -2,7 +2,6 @@ package com.sprint4us.demo;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sprint4us.demo.dao.CountryLanguageDAO;
@@ -101,7 +100,6 @@ public class CountryLanguageDAOTestBase {
 				expectedTotalLanguages, actualTotalLanguages);
 	}
 
-	@Test(expected = RuntimeException.class)
 	public void testCreateOnException() {
 
 		service.create(new Country("France"));
