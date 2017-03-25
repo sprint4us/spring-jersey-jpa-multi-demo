@@ -47,9 +47,3 @@ Run the secure client
 >France has 39% English as foreign language.
 
 Now, time to kick off Travis CI ☺
-
----
-
-TODO:
->
->Add auth & https to make the webapp securer 
