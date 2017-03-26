@@ -2,13 +2,16 @@ package com.sprint4us.demo;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sprint4us.demo.dao.CountryLanguageDAO;
 import com.sprint4us.demo.entity.Country;
 import com.sprint4us.demo.entity.Language;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public abstract class CountryLanguageDAOTestBase {
 
 	@Autowired
