@@ -2,13 +2,14 @@ package com.sprint4us.demo;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sprint4us.demo.dao.CountryLanguageDAO;
 import com.sprint4us.demo.entity.Country;
 import com.sprint4us.demo.entity.Language;
 
-public class CountryLanguageDAOTestBase {
+public abstract class CountryLanguageDAOTestBase {
 
 	@Autowired
 	private CountryLanguageDAO service;
@@ -24,6 +25,7 @@ public class CountryLanguageDAOTestBase {
 	 * the_United_Kingdom: French 23%, German 9%, Spanish 8%
 	 */
 
+	@Test
 	public void testCreateOK() {
 
 		String[] countryNames = {
@@ -100,11 +102,13 @@ public class CountryLanguageDAOTestBase {
 				expectedTotalLanguages, actualTotalLanguages);
 	}
 
+	@Test(expected = RuntimeException.class)
 	public void testCreateOnException() {
 
 		service.create(new Country("France"));
 	}
 
+	@Test
 	public void testSearchOK() {
 
 		Country country = service.searchCountry("Spain");
@@ -120,6 +124,7 @@ public class CountryLanguageDAOTestBase {
 		assertEquals("The percentage is not equal", 15, actualPercentage);
 	}
 
+	@Test
 	public void testUpdateOK() {
 
 		// test anti sql injection
@@ -133,14 +138,10 @@ public class CountryLanguageDAOTestBase {
 				actualNumberOfUpdated);
 
 		Country country = service.searchCountry("Italy");
-
+		service.syncToDB(country);
 		Language language = country.getLanguages().stream()
 				.filter(l -> l.getName() == "German").findFirst().get();
 		int actualPercentage = language.getPercentage();
-		assertEquals("The percentage is not equal", 5, actualPercentage);
-
-		service.syncToDB(country);
-		actualPercentage = language.getPercentage();
 		assertEquals("The percentage is not equal", 99, actualPercentage);
 	}
 }
