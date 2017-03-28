@@ -61,6 +61,13 @@ public class CountryLanguageEndToEndClassicTestImpl
 				.queryParam("l", lang.getName()).request().get();
 		String str = resp.readEntity(String.class);
 
+		// pair with setUp
+		try {
+			super.tearDown();
+		} catch (Exception e) {
+			fail("can't tear down Jersey test.");
+		}
+
 		return str;
 	}
 }
