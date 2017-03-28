@@ -17,6 +17,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.sprint4us.demo</groupId>
+			<artifactId>spring-jersey-jpa-multi-demo-test-base</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 		</dependency>

@@ -19,6 +19,7 @@ import com.sprint4us.demo.entity.Language;
 @Path("/demo")
 public class CountryLanguageResource {
 
+	// inject delageted from spring to hk2
 	@Inject
 	private CountryLanguageDAO service;
 

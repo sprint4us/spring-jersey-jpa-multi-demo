@@ -1,21 +1,16 @@
 package com.sprint4us.demo;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Collections;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -23,26 +18,32 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.sprint4us.demo.entity.Country;
 import com.sprint4us.demo.entity.Language;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CountryLanguageEndToEndTest {
+// don't mess up "default" profile
+@Profile("e2e")
+@Component
+@SuppressWarnings("unchecked")
+public class CountryLanguageEndToEndBootTestImpl
+		implements CountryLanguageEndToEndTestable {
 
 	private final static String USER = "user";
+
 	@Autowired
 	private TestRestTemplate rest;
 
 	@Value("${security.user.password}")
 	private String password;
 
-	@Test
-	@SuppressWarnings("unchecked")
-	public void testEndToEnd() {
+	@Override
+	public Country createCountry() {
 
-		rest = rest.withBasicAuth(USER, password);
-
-		Country country = rest.postForObject("/demo/create/country",
+		Country country = secureRest().postForObject("/demo/create/country",
 				"Netherlands", Country.class, Collections.EMPTY_MAP);
-		assertEquals("Netherlands", country.getName());
+
+		return country;
+	}
+
+	@Override
+	public Country updateCountry(Country country) {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -50,21 +51,28 @@ public class CountryLanguageEndToEndTest {
 		formData.add("id", String.valueOf(country.getId()));
 		formData.add("l", "English");
 		formData.add("p", "90");
-		Country updatedCountry = rest.postForObject("/demo/update/country",
-				new HttpEntity<>(formData, headers), Country.class,
-				Collections.EMPTY_MAP);
-		assertEquals(country.getId(), updatedCountry.getId());
-		assertEquals(country.getName(), updatedCountry.getName());
-		Language lang = updatedCountry.getLanguages().get(0);
-		assertEquals("English", lang.getName());
-		assertEquals(90, lang.getPercentage());
+		Country updatedCountry = secureRest().postForObject(
+				"/demo/update/country", new HttpEntity<>(formData, headers),
+				Country.class, Collections.EMPTY_MAP);
 
-		String str = rest.exchange(
+		return updatedCountry;
+	}
+
+	@Override
+	public String searchPercentage(Country updatedCountry) {
+
+		Language lang = updatedCountry.getLanguages().get(0);
+		String str = secureRest().exchange(
 				UriComponentsBuilder.fromUriString("/demo/search/percentage")
-						.queryParam("c", country.getName())
+						.queryParam("c", updatedCountry.getName())
 						.queryParam("l", lang.getName()).build().toUri(),
 				HttpMethod.GET, null, String.class).getBody();
-		assertEquals(String.format("%s has %d%% %s as foreign language.\n",
-				country.getName(), lang.getPercentage(), lang.getName()), str);
+
+		return str;
+	}
+
+	private TestRestTemplate secureRest() {
+
+		return rest.withBasicAuth(USER, password);
 	}
 }
